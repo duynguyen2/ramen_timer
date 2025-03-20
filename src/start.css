@@ -1,0 +1,19 @@
+body {
+    background: linear-gradient(100deg, #9c7eee, #cb78db, #c96363, #df70708e);
+    backdrop-filter: blur(5.5px);
+}
+
+.text-box {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background: linear-gradient(#eedc3c, #cc4607, #381e1e);
+    background-blend-mode: color-dodge;
+    backdrop-filter: blur(5.5px);
+    border: #000;
+    outline: #000;
+    box-sizing: border-box;
+    
+}
+
+.start-button {
+    background-image: url(/assets/imgs/start_ramen.gif);
+}
