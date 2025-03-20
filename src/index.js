@@ -1,35 +1,62 @@
-import React from 'react'
-import { useState, useEffect } from 'react';
-
-const Timer = (props:any) => {
-    const {initialMinute = 0,initialSeconds = 0} = props;
-    const [ minutes, setMinutes ] = useState(initialMinute);
-    const [seconds, setSeconds ] =  useState(initialSeconds);
-    useEffect(()=>{
-    let myInterval = setInterval(() => {
-            if (seconds > 0) {
-                setSeconds(seconds - 1);
-            }
-            if (seconds === 0) {
-                if (minutes === 0) {
-                    clearInterval(myInterval)
-                } else {
-                    setMinutes(minutes - 1);
-                    setSeconds(59);
-                }
-            } 
-        }, 1000)
-        return ()=> {
-            clearInterval(myInterval);
-          };
-    });
-
-    return (
+class Example extends React.Component {
+    constructor() {
+      super();
+      this.state = { time: {}, seconds: 5 };
+      this.timer = 0;
+      this.startTimer = this.startTimer.bind(this);
+      this.countDown = this.countDown.bind(this);
+    }
+  
+    secondsToTime(secs){
+      let hours = Math.floor(secs / (60 * 60));
+  
+      let divisor_for_minutes = secs % (60 * 60);
+      let minutes = Math.floor(divisor_for_minutes / 60);
+  
+      let divisor_for_seconds = divisor_for_minutes % 60;
+      let seconds = Math.ceil(divisor_for_seconds);
+  
+      let obj = {
+        "h": hours,
+        "m": minutes,
+        "s": seconds
+      };
+      return obj;
+    }
+  
+    componentDidMount() {
+      let timeLeftVar = this.secondsToTime(this.state.seconds);
+      this.setState({ time: timeLeftVar });
+    }
+  
+    startTimer() {
+      if (this.timer == 0 && this.state.seconds > 0) {
+        this.timer = setInterval(this.countDown, 1000);
+      }
+    }
+  
+    countDown() {
+      // Remove one second, set state so a re-render happens.
+      let seconds = this.state.seconds - 1;
+      this.setState({
+        time: this.secondsToTime(seconds),
+        seconds: seconds,
+      });
+      
+      // Check if we're at zero.
+      if (seconds == 0) { 
+        clearInterval(this.timer);
+      }
+    }
+  
+    render() {
+      return(
         <div>
-        { minutes === 0 && seconds === 0
-            ? null
-            : <h1> {minutes}:{seconds < 10 ?  `0${seconds}` : seconds}</h1> 
-        }
+          <button onClick={this.startTimer}>Start</button>
+          m: {this.state.time.m} s: {this.state.time.s}
         </div>
-    )
-}
+      );
+    }
+  }
+  
+  ReactDOM.render(<Example/>, document.getElementById('View'));

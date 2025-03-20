@@ -5,7 +5,7 @@ body {
 
 .text-box {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    background: linear-gradient(#eedc3c, #cc4607, #381e1e);
+    background: linear-gradient(#e2d562, #3694ff, #b86e6e);
     background-blend-mode: color-dodge;
     backdrop-filter: blur(5.5px);
     border: #000;
