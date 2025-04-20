@@ -1,27 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-const Timer = ({ timeLeft, setTimeLeft, isAlarmOn, setIsAlarmOn}) => {
-    useEffect(() => {
-        if(timeLeft <= 0) {
-            setIsAlarmOn(true);
-            return;
-        }
+function Timer({ duration }) {
+  const [timeLeft, setTimeLeft] = useState(duration);
+  const [isRunning, setIsRunning] = useState(false);
 
-        const interval = setInterval(() => {
-            setTimeLeft((prevTime) => prevTime - 1);
-        }, 1000);
+  useEffect(() => {
+    if (!isRunning) return;
+    const interval = setInterval(() => {
+      setTimeLeft(prev => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [isRunning]);
 
-        return () => clearInterval(interval);
-    }, [timeLeft, setTimeLeft, setIsAlarmOn]);
-
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
-
-    return (
-        <div>
-            <p>{`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}</p>
-        </div>
-    );
-};
-
-export default Timer;
+  return (
+    <div>
+      <h1>{timeLeft}</h1>
+      <button onClick={() => setIsRunning(!isRunning)}>
+        {isRunning ? 'Pause' : 'Start'}
+      </button>
+    </div>
+  );
+}
